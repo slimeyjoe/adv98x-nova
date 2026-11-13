@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+build/
+.claude/
+# The game and everything made from it: not committed (source/tools/gamedata.py import)
+resources/original/
+resources/derived/
+docs/re/listing/*.asm
