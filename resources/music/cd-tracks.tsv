@@ -1,0 +1,34 @@
+# PC-98 sound file <-> CD audio track of the FM Towns CD (1993) and of the Windows CD (1996; same recordings).
+# Source: re-tools/evecmp.py (what each release starts at the same place of each script) and the sound tests
+# (SOUND.MES / SOUND.EVE); docs/re/other-versions.md section 4. cd_track = disc track number (track 1 is data).
+# start_sector / sectors: position in the Towns image (2352-byte sectors, 75 per second). loop: what the Windows
+# scripts set before starting it (yes = repeat). pc98_uses: sound commands naming the file in the 118 PC-98 scripts.
+pc98_file	kind	cd_track	length	seconds	start_sector	sectors	towns_command	windows_command	windows_wav	loop	pc98_uses
+CATS.USO	jingle	2	0:13	13	9000	975	cd 1	play 0 2		no	1
+NV01.USO	music	3	2:36	156	9975	11700	cd 2	play 0 3		yes	6
+NV02.USO	music	4	2:19	139	21675	10425	cd 3	play 0 4		yes	4
+NV03.USO	music	5	2:12	132	32100	9900	cd 4	play 0 5		yes	4
+NV04.USO	music	6	2:27	147	42000	11025	cd 5	play 0 6		yes	9
+NV05.USO	music	7	2:09	129	53025	9675	cd 6	play 0 7		yes	2
+NV06.USO	music	8	2:22	142	62700	10650	cd 7	play 0 8		yes	3
+NV07.USO	music	9	2:47	167	73350	12525	cd 8	play 0 9		yes	3
+NV08.USO	music	10	2:37	157	85875	11775	cd 9	play 0 10		yes	3
+NV09.USO	music	11	1:43	103	97650	7725	cd 10	play 0 11		yes	2
+NV10.USO	music	12	2:31	151	105375	11325	cd 11	play 0 12		yes	2
+NV11.USO	music	13	3:51	231	116700	17325	cd 12	play 0 13		yes	2
+NV12.USO	music	14	2:56	176	134025	13200	cd 13	play 0 14		yes	9
+NV13.USO	music	15	2:00	120	147225	9000	cd 14	play 0 15		yes	12
+NV14.USO	music	16	1:51	111	156225	8325	cd 15	play 0 16		yes	5
+NV15.USO	music	17	2:39	159	164550	11925	cd 16	play 0 17		yes	3
+NV16.USO	music	18	2:02	122	176475	9150	cd 17	play 0 18		yes	2
+NVSE01.USO	effect						se 0	play 1 "NVSE01.WAV"	NVSE01.WAV	yes	11
+NVSE02.USO	effect	19	0:08	8	185625	600	cd 18	play 0 19		no	3
+NVSE03.USO	effect						se 1	play 1 "NVSE03.WAV"	NVSE03.WAV	no	18
+NVSE04.USO	effect						se 2	play 1 "NVSE04.WAV"	NVSE04.WAV	yes	3
+NVSE05.USO	effect						se 3	play 1 "NVSE05.WAV"	NVSE05.WAV	yes	9
+NVSE06.USO	effect						se 4	play 1 "NVSE06.WAV"	NVSE06.WAV	yes	7
+NVSE07.USO	effect						se 5	play 1 "NVSE07.WAV"	NVSE07.WAV	yes	10
+NVSE08.USO	effect						se 6	play 1 "NVSE08.WAV"	NVSE08.WAV	no	3
+NVSE09.USO	effect	20	0:09	9	186225	675	cd 19	play 0 20		no	3
+NVSE10.USO	effect	21	0:08	8	186900	600	cd 20	play 0 21		no	12
+NVSE11.USO	effect	22	2:27	147	187500	11025	cd 21	play 0 22		no	8

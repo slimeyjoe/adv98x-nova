@@ -172,9 +172,10 @@ for line. What differs:
   and once more; `2D21` lacks one effect 7; `MAP2` does not restart song 1.
 * **Flags**: the same assignments and tests everywhere except the save / mode machinery above, one
   duplicated `f900 = 1` in `D32` and a missing `f100 = 0` in `S015`.
-* **Jumps**: the PC-98 scripts `202`, `2MAP1B`, `HHKEI`, `HHLEM`, `HHNAT` name scripts that do not
-  exist (`2MAP1C`→ present, `2MAP2C`, `2MAP3B`: see `compare-win/summary.tsv`); the Windows scripts
-  do not carry those references.
+* **Jumps**: five PC-98 scripts contain a `mes-jump` that the Windows script lacks: `202` and
+  `HHLEM` → `2MAP1C`; `2MAP1B` and `HHKEI` → `2MAP2C`; `HHNAT` → `2MAP3B`. The last two targets
+  exist in no release: dead references in the PC-98 scripts (the Towns `2MAP1B` lacks its one
+  too). `END.EVE` adds a jump back to `START`.
 
 ### 2.5 Pictures (see graphics-formats.md §5 for the Pi format and the pixel comparison)
 
@@ -190,8 +191,8 @@ Which pictures the scripts load (`evecmp.py`; counts = scripts):
 | `BL` (black screen) | 25 scripts | PC-98 fades and clears |
 | `NV04` | `RO02B` | PC-98 loads `NV01L` there |
 
-Only loaded by the PC-98: `NVWIN` (the text-window frame, 101 scripts; Windows draws its window
-itself and uses `MAPWIN` / `NVWIN.PI` only on maps), `SAVE`, `NV99`, `NV01` in `D22`, `MAP2` in
+Only loaded by the PC-98: `NVWIN` (the text-window frame, in 101 scripts; the Windows scripts
+open the text window with `effect` instead), `SAVE`, `NV99`, `NV01` in `D22`, `MAP2` in
 `2MAP1B/C`, and the half pictures. `NV19A.GPC` exists on the PC-98 disks but no script of any
 release loads it.
 
@@ -234,7 +235,8 @@ the CDF only has finer edges (cells where the 2×2 CDF block is not uniform: 67,
 One session, 22 tracks: track 1 is MODE1 data, sectors 0–8999 (2:00; the file system uses 5358
 blocks, the rest is padding), tracks 2–22 are audio, sectors 9000–198 524 (42:07). The `.cue` and
 the `.ccd` agree; no index 0 / pregap is recorded for the audio tracks, the gaps are part of the
-tracks (each starts with 0.14–0.55 s and ends with about 2 s of digital silence). Track lengths:
+tracks (each starts with 0.14–0.55 s and ends with 1.8–2.8 s of digital silence; only track 22
+runs to the last sector). Track lengths:
 §4. `cdimg.py wav IMAGE n OUT.wav` exports a track, `cdimg.py audio IMAGE` prints length, peak,
 silence and MD5 per track.
 
@@ -256,8 +258,8 @@ and "Copyright(C) 1991,93 Ides."; `NOVA.INI` announces "AdvTowns for CD … Copy
 1991,93". Tuneup is the author of Adv98V: this is the Towns port of the same interpreter
 (**inferred** from the notices and from the script format, §3.4; the code was not disassembled).
 The plug-ins the PC-98 loads from `.TCM` files are built in — the executable contains the names
-`acte1.tcm`, `chgfonth.tcm`, `mousenam.tcm`, `palch.tcm`, `whiteh.tcm`, and the scripts "load" them
-into numbered slots (`load-mem "acte1.tcm" 1`; `exec-mem 1 "…"`). `mousenam.tcm` replaces
+`acte1.tcm`, `chgfonth.tcm`, `mousenam.tcm`, `palch.tcm`, `whiteh.tcm`, and the scripts' `load-mem`
+of those names selects them. `mousenam.tcm` replaces
 `InputNam.tcm`: the name is entered with the mouse on an on-screen keyboard (`KEY_0/A/H/K.GPC`).
 Saves go to a user floppy: `A:\FLAGDISK.013` (disk label check; 013 is also the volume number
 `IDES_013`), `A:\NOVA.FLX`, `A:\NOVA.NAM`.
@@ -266,12 +268,13 @@ Saves go to a user floppy: `A:\FLAGDISK.013` (disk label check; 013 is also the 
 
 A table of 16-byte entries — 12 bytes of NUL-padded lower-case name, u32 offset — ending where the
 first member starts; the last entry has an empty name and the file size. Members are stored
-unpacked. `NOVA.000`–`012` hold 514 members = 232 distinct names: 118 `.mes`, 105 `.gpc`, 4
+unpacked. `NOVA.000`–`012` hold 483 members = 232 distinct names: 118 `.mes`, 105 `.gpc`, 4
 `.clm`, and in `NOVA.000` the tables `nova.dir`, `nova.fmb`, `nova.pmb`, `nova.cdt`, `nova.se`.
 Members of one name are identical in every archive that has them (**verified**): each archive is
 a self-contained part of the game (its scripts and every picture they need), so that playing
-does not seek across the disc (**inferred**). `nova.dir` is the index: an 8-byte name, then 122
-records of 8-byte script name + u16 archive number. A script changes archive with `D5 n "NOVA.0xx"`.
+does not seek across the disc (**inferred**). `nova.dir` is the index: an 8-byte name, then 121
+records of 8-byte script name + u16 archive number and an end record (FFFFh). A script changes
+archive with `D5 0 "NOVA.0xx"`.
 
 ### 3.4 Scripts (`evecmp.py towns-check`, `evecmp.py towns`)
 
@@ -285,9 +288,9 @@ PC-98 structure):
 |---|---|---|
 | variable token | 2 bytes (index and 4-bit value packed, mes-format.md §2) | 3 bytes: `10h + op` (0 set / equal, 2 add / ≥, 4 subtract / ≤), index × 2, value |
 | `sound` (D0) | `"file.USO"`, `se "file"`, numbers | a two-letter device first: `cd n` = CD track via `nova.cdt`, `se n` = sample n of `nova.se`; `fm` / `pm` / `cd` / `se "file"` load the tables (in `NOVA.INI`); the plain numbers (0 stop, 1 play, 2 fade) as on PC-98 |
-| D5 | `decrypt key` | `D5 n "file"`: open archive n (0 = `NOVA.000`, 1 = the directory) |
-| `load-mem` / `exec-mem` | address in the interpreter's segment | slot number of a built-in plug-in |
-| `wait` (AB) in some scripts | `wait` | `proc 0` (a procedure defined once), 43 places |
+| D5 | `decrypt key` | `D5 n "file"`: n = 0 open an archive (`NOVA.INI`: `NOVA.000`; later e.g. `NOVA.011`), n = 1 name the directory file (`NOVA.dir`) |
+| `load-mem` / `exec-mem` | address in the interpreter's segment | NOVA's scripts keep the PC-98 addresses (256, 8448) although the code is built in; the launcher's scripts use small slot numbers (`load-mem "acte1.tcm" 1`, `exec-mem 1 "…"`) |
+| `wait` (AB) in the picture viewer `H.MES` | `wait` | `proc 0`, which `H.MES` defines as a key wait or a timed delay depending on a mode variable (an automatic slide show), 44 places |
 
 Flag tokens, text, numbers, blocks and all other opcodes are unchanged. The three defects of the
 PC-98 scripts (mes-format.md §6) are present unchanged.
@@ -296,9 +299,10 @@ Comparison with the PC-98 scripts (same method as §2.4): **7206 lines equal, 11
 only PC-98, 3 only Towns**, all of the differences in two scripts: `MODE` (the title menu: the
 name-entry prompt and the save-slot texts are replaced by the Towns versions) and `END` (the staff
 roll credits "Sound Arrangement AKIRA / YOSHIHITO HATA" and "Sound Produce MUSE" where the PC-98
-has "Sound Effects by KIYOTAKA SATO" and "Sound System by MUSE"). Pictures loaded, flags and
-jumps are the same in every script; the music cues are the same in every script after the mapping
-of §4 (0 scripts differ). `RUN.MES` additionally clears variables A–Z. Six scripts exist only on
+has "Sound Effects by KIYOTAKA SATO" and "Sound System by MUSE"). Pictures loaded are the same in every script, and so are the music cues after the mapping of §4
+(0 scripts differ). Flags and variables differ only in `MODE` (variable A, the Towns menu) and
+`RUN` (which clears variables A–Z and loads `mousenam.tcm`); jumps only in `2MAP1B` (the dead
+reference to `2MAP2C` is gone) and `END` (returns to `RUN`). Six scripts exist only on
 the Towns disc, in `MENU.000`: `MENU`, `START`, `FORMAT`, `FORMAT1`, `FORMAT2`, `RETURN`.
 
 The Towns release is therefore an independent witness for the PC-98 script data: where the Windows
@@ -315,9 +319,8 @@ filter byte f > 0. With that, every stream is consumed exactly, and **100 of the
 have a PC-98 namesake decode to the same pixels, palette and position**. The exception is `NVWIN`
 (the text window: 640×104 at (0,296) on Towns, 528×103 at (56,297) on PC-98). `NV19A` is missing
 on the Towns disc (it is unused). Towns-only pictures: `KEY_0`, `KEY_A`, `KEY_H`, `KEY_K`
-(on-screen keyboard, 184×132) and in `MENU.000` the launcher's `MAIN` (640×400: the cabin of
-`NV00` with a character added — art that is in no other release), `SELECT`, and 15 labels of
-240×40.
+(on-screen keyboard: Latin, hiragana, katakana; 184×132, `KEY_0` 192×138) and in `MENU.000` the launcher's `MAIN` (640×400: the cabin of
+`NV00` with a character added — art that is in no other release), and 17 labels of 240×40.
 
 The click maps `MAP1`–`MAP4.CLM` are byte-identical to the PC-98 files.
 

@@ -3,7 +3,7 @@
 
 The Windows release runs on a different engine (`EVE.EXE`, MFC; "NOVA for Windows95") whose
 scripts live in `EVE.PCK`. The grammar below is the one the interpreter in `EVE.EXE` reads
-(function 0x40BFD0, dispatch table 0x40D1C0/0x40D288; docs/re/other-versions.md §2.2).
+(function 0x40BFD0, dispatch table 0x40D1C0/0x40D288; docs/re/other-versions.md §2.3).
 
   python3 -I re-tools/evedis.py list FILE...            # listing on stdout
   python3 -I re-tools/evedis.py check FILE...           # every byte accounted for, jump targets valid
