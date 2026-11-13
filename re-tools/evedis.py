@@ -70,8 +70,8 @@ OPS = {
     0xC2: ('repeat', 'w?'),       # 0 w: [repeatCDAUDIO] := w; 1 w: [repeatWAVE] := w
     0xD0: ('title', 's'),
     0xD1: ('mkdir', 's'),
-    0xD2: ('sys-load', ''),       # read EVE.EVS
-    0xD3: ('sys-save', ''),       # write EVE.EVS
+    0xD2: ('sys-save', ''),       # write EVE.EVS
+    0xD3: ('sys-load', ''),       # read EVE.EVS
     0xD4: ('sys-get', 'sn'),      # variable s := system value n
     0xD5: ('sys-set', 'nn'),      # system value a := b
     0xD7: ('reset', 'n'),         # 0: clear all variables and set the defaults

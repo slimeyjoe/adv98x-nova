@@ -1,0 +1,120 @@
+script	story	role	size	successors
+201	2	branch scene	5364	2MAP1B
+202	2	branch scene	6929	HHLEM
+203	2	branch scene	6023	2MAP1C
+2ALEX	2	branch point	985	202 201 203
+2BRG	2	map event (phase B)	1566	2ALEX 2MAP1
+2CAR	2	map event (phase A)	1746	2MAP3
+2CLD	2	map event (phase A)	1761	2MAP2A
+2D21	2	prologue: scene	1634	2D31 2D22
+2D22	2	prologue: scene	1531	CAP
+2D31	2	prologue: scene	1455	CAP
+2ENG	2	map event (phase A)	863	2MAP3
+2KEI	2	map event (phase B)	1461	2ALEX 2MAP1
+2LEM	2	map event (phase B)	5898	2ALEX 2MAP2B
+2MAL	2	map event (phase B)	6616	2MAP2B 2ALEX
+2MAP1	2	map screen (phase B)	1133	2MAP2B 2KEI 2BRG
+2MAP1B	2	map screen (ending A)	807	RO01
+2MAP1C	2	map screen (ending C)	790	RO01B
+2MAP2A	2	map screen (phase A)	1999	2CLD 2MAP3
+2MAP2B	2	map screen (phase B)	2774	2MAP1 YUKA3 2LEM 2MAL 2NAT
+2MAP3	2	map screen (phase A)	1259	2MAP2A 2CAR 2ENG 2MAP4
+2MAP4	2	map screen (phase A)	781	2MAP3 YUKA2
+2NAT	2	map event (phase B)	1097	2ALEX 2MAP2B
+301	3	scene	824	3K01
+3H	3	final scene (ending 3)	4920	END
+3HK	3	scene	2676	SELC
+3HL01	3	adult scene, round 1	3316	SELC2 SELC
+3HL02	3	adult scene, round 2	4049	3H SELC2
+3HM01	3	adult scene, round 1	3059	SELC2 SELC
+3HM02	3	adult scene, round 2	2794	3H SELC2
+3HN01	3	adult scene, round 1	3416	SELC2 SELC
+3HN02	3	adult scene, round 2	3497	3H SELC2
+3HY01	3	adult scene, round 1	4511	SELC2 SELC
+3HY02	3	adult scene, round 2	3323	3H SELC2
+3K01	3	scene	2228	3HK
+ALEX	1	chapter 1: night scene	3208	S016
+BLG	1	chapter 1: room visit	4935	S012
+BLG2	1	map event	2759	WAL3 MAP1
+CAP	2	prologue: scene	6180	YUKA COM
+COM	2	prologue: scene	2684	2MAP2A
+CTD	1	chapter 1: room visit	2437	S014
+CTD2	1	map event	723	MAP4
+D11	1	prologue: meeting scene (exit)	7783	S010B
+D21	1	prologue: exploration node	4341	EV01 D24 D23
+D22	1	prologue: exploration node	2089	EV02 D23
+D23	1	prologue: exploration node	5522	EV04 S010B
+D24	1	prologue: exploration node	2138	D22 D31 D23
+D31	1	prologue: exploration node	1065	D32 D33
+D32	1	prologue: exploration node	2053	D34
+D33	1	prologue: exploration node	1704	D35 D34
+D34	1	prologue: exploration node	1944	D36 EV03 D33 D32
+D35	1	prologue: exploration node	2880	D34 D3YK
+D36	1	prologue: exploration node	1638	D37 D34
+D37	1	prologue: meeting scene (exit)	5554	S010A
+D3YK	1	prologue: meeting scene (exit)	5228	S010
+END	system	staff roll, ending card, unlock save	4087	
+ENG	1	chapter 1: room visit	1875	S014
+ENG2	1	map event	2627	MAP3
+EV01	1	prologue: event	685	D31
+EV02	1	prologue: event	624	D11
+EV03	1	prologue: event	7996	S010 D11
+EV04	1	prologue: event	639	D31
+H	system	CG mode	5377	MODE
+HHKEI	2	ending B chain	5932	HHNAT
+HHLEM	2	ending B chain	3636	HHKEI
+HHMAL	2	ending B final	3554	END
+HHNAT	2	ending B chain	4829	HHYUKA
+HHYUKA	2	ending B chain	1916	HHMAL
+LEH	1	map event	5205	YUH01 S017
+MAP1	1	map screen	935	MAP2 BLG2
+MAP2	1	map screen	2567	MAP1 YUH LEH NTH MAP3
+MAP3	1	map screen	1073	MAP2 ENG2 MAP4
+MAP4	1	map screen	779	MAP3 CTD2
+MODE	system	title / mode menu, name entry, load	3176	NVOP SOUND H load:2MAP2A load:2MAP2B load:MAP2
+MON01	2	scene (phase A exit)	1283	MT
+MT	2	scene (phase A exit)	2802	2MAP2B
+NOVA	1	story start	3972	D21
+NOVA2	2	story start	1826	2D21
+NOVA3	3	story start	2198	301
+NTH	1	map event	7109	YUH01 S017 MAP2 NTH2
+NTH2	1	map event: scene (exit)	7220	S017
+NVOP	system	opening (all stories)	8037	NOVA3 NOVA2 NOVA
+RO01	2	ending A chain	2241	RO02
+RO01B	2	ending C chain	3126	RO02B
+RO02	2	ending A chain	3041	RO03
+RO02B	2	ending C chain	3177	RO03B
+RO03	2	ending A chain	4734	RO04
+RO03B	2	ending C chain	3465	RO04B
+RO04	2	ending A final	2843	END
+RO04B	2	ending C final	2756	END
+RUN	system	boot: logo, plug-ins	149	MODE
+S010	1	chapter 1: wake-up variant	2829	S011
+S010A	1	chapter 1: wake-up variant	4761	S011
+S010B	1	chapter 1: wake-up variant	1903	S011
+S011	1	chapter 1: scene	3510	S012
+S012	1	chapter 1: deck hub	1914	S015 BLG WAL S013
+S013	1	chapter 1: deck hub	1004	S012 S014
+S014	1	chapter 1: deck hub	1395	CTD ENG S013
+S015	1	chapter 1: scene	3833	YUH01 ALEX
+S016	1	chapter 1: scene	5832	MAP1
+S017	1	chapter 2: scene	3477	S018
+S018	1	chapter 2: scene	5757	S019
+S019	1	chapter 2: examination menu	2676	S020
+S020	1	chapter 2: scene	4347	S021
+S021	1	chapter 2: scene	6973	S022
+S022	1	chapter 2: scene	860	S023
+S023	1	chapter 2: scene	3648	S024
+S024	1	chapter 2: scene	4588	S025
+S025	1	final scene (ending 1)	1433	END
+SELC	3	selection menu, round 1	4095	3HN01 3HM01 3HL01 3HY01
+SELC2	3	selection menu, round 2	2887	3HN02 3HM02 3HL02 3HY02
+SOUND	system	music mode	1356	MODE
+WAL	1	chapter 1: room visit	1797	S012
+WAL3	1	map event: scene (exit)	10787	YUH01 S017
+YUH	1	map event	575	MAP2
+YUH01	1	adult scene (two entries)	9896	S016 S017
+YUKA	2	prologue: scene	3194	2MAP2A
+YUKA2	2	map event (phase A)	5703	MON01
+YUKA3	2	map event (phase B)	3339	2ALEX 2MAP2B
+NV.INI	system	start script (banner, copy protection)	954	RUN

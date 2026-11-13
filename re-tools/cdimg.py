@@ -10,6 +10,9 @@ ISO 9660 file system of the data track, audio tracks as WAV. Stdlib only.
   python3 -I re-tools/cdimg.py audio IMAGE             # per audio track: length, peak, lead/trail silence, md5
   python3 -I re-tools/cdimg.py arc-ls ARCHIVE...       # members of AdvTowns archives (NOVA.000 ...)
   python3 -I re-tools/cdimg.py arc-extract OUTDIR ARCHIVE...    # -> OUTDIR/<archive name>/<member>
+  python3 -I re-tools/cdimg.py gpc-png OUTDIR FILE.GPC...       # AdvTowns pictures -> PNG
+  python3 -I re-tools/cdimg.py gpc-cmp TOWNS_DIR PC98_DIR       # compare them with the PC-98 GPCs
+  python3 -I re-tools/cdimg.py se-wav NOVA.SE OUTDIR            # the samples of NOVA.SE -> WAV
 
 IMAGE is the .img / .bin file; the .cue and .ccd are looked up next to it. Track ends come from
 the next track's start (index 1; the pregap, index 0, belongs to the end of the previous track as
@@ -19,6 +22,16 @@ Written for the FM Towns CD of NOVA (docs/re/other-versions.md §3).
 AdvTowns archive ("AdvTowns for CD", Ides 1991,93): a table of 16-byte entries, 12 bytes of
 NUL-padded lower-case name + u32 LE offset of the member; the table ends where the first member
 starts; the last entry has an empty name and the file size as offset. Members are stored as is.
+
+AdvTowns .GPC picture (no signature): 16 palette words 0x0GRB, then u16 width, height, x, y,
+k; then the same zero-suppression stream as the PC-98 GPC (source/tools/gpc.py), but a row is a
+filter byte + width/2 bytes of packed pixels (low nibble = left pixel) instead of four bit
+planes, and both the row interleave and the filter byte are stored as exponents: interleave
+step = 1 << (k - 1), horizontal XOR step = 1 << (f - 1) for a filter byte f > 0.
+
+NOVA.SE: u16 count, then count x (u8 0, u32 offset); at each offset a 32-byte FM Towns SND
+header (8 name, u32 id, u32 length, u32 loop start, u32 loop length, u16 rate (Hz * 0.098),
+s16 adjust, u8 base note, 3 x 0) and `length` bytes of 8-bit sign-magnitude PCM.
 """
 import hashlib
 import os
@@ -350,7 +363,113 @@ def cmd_arc(paths, outdir=None):
                     f.write(data[off:off + size])
 
 
+def _gpc():
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'source', 'tools'))
+    import gpc
+    return gpc
+
+
+def towns_gpc(data):
+    """AdvTowns picture -> (palette words, width, height, x, y, pixels, bytes consumed)."""
+    gpc = _gpc()
+    pal = struct.unpack_from('<16H', data, 0)
+    w, h, x, y, k = struct.unpack_from('<5H', data, 0x20)
+    if not (0 < w <= 640 and 0 < h <= 480 and k <= 8):
+        raise ValueError('not an AdvTowns picture')
+    rl = (w + 1) // 2
+    buf, end = gpc.unpack_stream(data, 0x2A, (rl + 1) * h)
+    for r in range(h):
+        f = buf[r * (rl + 1)]
+        if f:
+            buf[r * (rl + 1)] = 1 << (f - 1)
+    rows = gpc.deinterleave(gpc.unfilter_rows(buf, rl, h), 1 << (k - 1) if k else 1)
+    px = bytearray()
+    for r in rows:
+        for b in r:
+            px.append(b & 15)
+            px.append(b >> 4)
+    return pal, w, h, x, y, bytes(px), end
+
+
+def cmd_gpc_png(outdir, paths):
+    gpc = _gpc()
+    os.makedirs(outdir, exist_ok=True)
+    for p in paths:
+        with open(p, 'rb') as f:
+            pal, w, h, x, y, px, _ = towns_gpc(f.read())
+        gpc.write_png(os.path.join(outdir, os.path.splitext(os.path.basename(p))[0] + '.png'),
+                      w, h, px, gpc.palette_rgb4(pal))
+
+
+def cmd_gpc_cmp(towns_dir, pc_dir):
+    gpc = _gpc()
+    pc = {}
+    for root, _, files in os.walk(pc_dir):
+        for fn in files:
+            if fn.upper().endswith('.GPC'):
+                with open(os.path.join(root, fn), 'rb') as f:
+                    pc.setdefault(fn.upper(), set()).add(f.read())
+    seen = {}
+    for root, _, files in os.walk(towns_dir):
+        for fn in sorted(files):
+            if fn.upper().endswith('.GPC'):
+                with open(os.path.join(root, fn), 'rb') as f:
+                    seen.setdefault(fn.upper(), set()).add(f.read())
+    n = same = 0
+    for name in sorted(seen):
+        for data in seen[name]:
+            pal, w, h, x, y, px, end = towns_gpc(data)
+            note = '' if end == len(data) else ' (stream ends at %d of %d)' % (end, len(data))
+            if name not in pc:
+                print('%-12s %dx%d+%d+%d  Towns only%s' % (name, w, h, x, y, note))
+                continue
+            n += 1
+            res = []
+            for pd in pc[name]:
+                hdr, ppal, pw, ph, pxx, pyy, ppx = gpc.decode(pd)
+                res.append(((pw, ph) == (w, h) and ppx == px, tuple(hdr['palette_raw']) == pal,
+                            (pw, ph, pxx, pyy) == (w, h, x, y), (pw, ph, pxx, pyy)))
+            best = max(res)
+            if best[:3] == (True, True, True):
+                same += 1
+            else:
+                print('%-12s %dx%d+%d+%d  pixels %s, palette %s, PC-98 geometry %dx%d+%d+%d%s'
+                      % ((name, w, h, x, y, 'same' if best[0] else 'differ',
+                          'same' if best[1] else 'differs') + best[3] + (note,)))
+    print('%d pictures with a PC-98 namesake, %d identical in pixels, palette and position' % (n, same))
+
+
+def cmd_se_wav(path, outdir):
+    with open(path, 'rb') as f:
+        d = f.read()
+    n = struct.unpack_from('<H', d, 0)[0]
+    os.makedirs(outdir, exist_ok=True)
+    for i in range(n):
+        off = struct.unpack_from('<I', d, 3 + 5 * i)[0]
+        name = d[off:off + 8].split(b'\0')[0].decode('ascii')
+        if not re.match(r'[A-Za-z0-9_]+$', name):
+            raise ValueError('unsafe sample name %r' % name)
+        _, size, ls, ll, rate, adj = struct.unpack_from('<IIIIHh', d, off + 8)
+        hz = round(rate * 1000 / 98)
+        pcm = bytes(b if b & 0x80 else 0x7F - b for b in d[off + 32:off + 32 + size])
+        with wave.open(os.path.join(outdir, '%d_%s.wav' % (i, name)), 'wb') as w:
+            w.setnchannels(1)
+            w.setsampwidth(1)
+            w.setframerate(hz)
+            w.writeframes(pcm)
+        print('%d\t%s\t%d bytes\t%d Hz\tloop %d+%d\tnote %d' % (i, name, size, hz, ls, ll, d[off + 28]))
+
+
 def main(argv):
+    if len(argv) >= 4 and argv[1] == 'gpc-png':
+        cmd_gpc_png(argv[2], argv[3:])
+        return 0
+    if len(argv) == 4 and argv[1] == 'gpc-cmp':
+        cmd_gpc_cmp(argv[2], argv[3])
+        return 0
+    if len(argv) == 4 and argv[1] == 'se-wav':
+        cmd_se_wav(argv[2], argv[3])
+        return 0
     if len(argv) >= 3 and argv[1] == 'arc-ls':
         cmd_arc(argv[2:])
         return 0
