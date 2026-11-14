@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Compare the scripts of the other releases of NOVA with the PC-98 scripts, file by file.
 
   python3 -I re-tools/evecmp.py win   PC98_MES_DIR WIN_DIR   [-o OUTDIR]   # Windows .EVE scripts

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Lister / checker / exporter for the `.EVE` scripts of the Windows release of NOVA (1996).
 
 The Windows release runs on a different engine (`EVE.EXE`, MFC; "NOVA for Windows95") whose

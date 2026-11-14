@@ -6,3 +6,4 @@ build/
 resources/original/
 resources/derived/
 docs/re/listing/*.asm
+source/compile_flags.txt

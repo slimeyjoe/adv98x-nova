@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Verify source/tools/gpc.py against two independent witnesses.
 
 1. The 1996 Windows release ships the same art as Pi files (decoded by

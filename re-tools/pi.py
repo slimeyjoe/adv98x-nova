@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Pi picture decoder (Yanagisawa's "Pi" format, 16-colour variant), as used by
 the 1996 Windows release of NOVA for its *.PI pictures.
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Reader for raw CD images (2352-byte sectors, e.g. CloneCD .img + .ccd/.cue): track table,
 ISO 9660 file system of the data track, audio tracks as WAV. Stdlib only.
 
