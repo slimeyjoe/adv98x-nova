@@ -31,7 +31,7 @@ Generated listings and comparison tables hold game text and live under `resource
 
 | Release | What was examined | Notes |
 |---|---|---|
-| Windows | `NOVA_Miirareta_Shitai.rar` | A fan repack ("Patched by AyuanX, 2023-07-13", `_Readme.txt`): `EVE.EXE` / `EVE_Win9x.EXE` are patched (no-CD, colour depth, locale, timing; the two differ in 67 bytes), `wincd.dll` / `palgdi.dll` are the patcher's, and the CD audio is supplied as `MUSIC/Track02`–`22.ogg`. `EVE.PCK` (2 529 048 bytes) is taken as original; its 253 members are in `resources/original/win/`. PE time stamp of the EXE: 1996-12-03. Extras: `_Wallpapers/` — 34 BMP, 640×400, 8-bit with 15–16 colours used, dated 1996-11-14: event pictures `Nv12`…`Nv50` from the original CD (per the readme). |
+| Windows | `NOVA_Miirareta_Shitai.rar` | A fan repack ("Patched by AyuanX, 2023-07-13", `_Readme.txt`): `EVE.EXE` / `EVE_Win9x.EXE` are patched (no-CD, colour depth, locale, timing; the two differ in 67 bytes), `wincd.dll` / `palgdi.dll` are the patcher's, and the CD audio is supplied as `MUSIC/Track02`–`22.ogg`. `EVE.PCK` (2 529 048 bytes) is taken as original; its 252 files are in `resources/original/win/`. PE time stamp of the EXE: 1996-12-03. Extras: `_Wallpapers/` — 34 BMP, 640×400, 8-bit with 15–16 colours used, dated 1996-11-14: event pictures `Nv12`…`Nv50` from the original CD (per the readme). |
 | FM Towns | `Nova [CD].7z` → CloneCD image `Nova.img/.ccd/.cue/.sub` | 466 930 800 bytes = 198 525 sectors of 2352 bytes (44:07:00). ISO 9660 volume `IDES_013`, publisher `IDES`, preparer "FUJITSU LTD HYPER MEDIA DEVELOPMENT CENTER", created 1993-07-14 16:35; all files dated 1993-07-14 16:20:34. |
 
 ## 2. Windows release
@@ -57,7 +57,7 @@ out here from the executable and the data.
 
 "PCK Version 1.00": the first 0x4000 bytes (a 32-byte header and 511 directory entries of 32
 bytes: 16-byte name, u32 offset, u32 size) are stored with every 16-bit word rotated right by one
-bit; member data is plain. 253 members: 118 `.EVE`, 123 `.PI`, 7 `.WAV`, 4 `.CDF` and one empty
+bit; member data is plain. 252 files (118 `.EVE`, 123 `.PI`, 7 `.WAV`, 4 `.CDF`) and one empty
 entry with a blank name.
 
 ### 2.3 `.EVE` scripts (**verified**: interpreter 0x40BFD0, tables 0x40D1C0 / 0x40D288; `evedis.py check`)
