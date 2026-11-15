@@ -53,7 +53,7 @@ SuperSakura's notes (Kirinn Bunnylin, `doc/scr/eve.md`) identify the engine as "
 Paradise*, *Cat's Part 1* and *Kurayami*; they give no format details. Everything below was worked
 out here from the executable and the data.
 
-### 2.2 `EVE.PCK` (recap; reader: `source/tools/diskimg.py`, **verified**)
+### 2.2 `EVE.PCK` (recap; reader: `source/tools/gamedata.py`, **verified**)
 
 "PCK Version 1.00": the first 0x4000 bytes (a 32-byte header and 511 directory entries of 32
 bytes: 16-byte name, u32 offset, u32 size) are stored with every 16-bit word rotated right by one
