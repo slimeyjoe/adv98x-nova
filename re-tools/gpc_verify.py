@@ -35,6 +35,7 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(ROOT, 'source', 'tools'))
 sys.path.insert(0, HERE)
 
+import gamedir  # noqa: E402
 import gpc   # noqa: E402
 import pi    # noqa: E402
 
@@ -189,12 +190,15 @@ def planes_from_pixels(w, h, x, y, pix):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
-    ap.add_argument('--pc98', default=os.path.join(ROOT, 'resources', 'original', 'pc98'))
-    ap.add_argument('--win', default=os.path.join(ROOT, 'resources', 'original', 'win'))
-    ap.add_argument('--ov1', default=os.path.join(ROOT, 'resources', 'derived', 'exe', 'NV.OV1'))
+    ap.add_argument('--pc98')
+    ap.add_argument('--win')
+    ap.add_argument('--ov1')
     ap.add_argument('--no-emu', action='store_true', help='skip the Unicorn witness')
     ap.add_argument('--tsv', help='also write the per-picture table to this file')
     args = ap.parse_args(argv)
+    args.pc98 = args.pc98 or gamedir.original(None, 'pc98')
+    args.win = args.win or gamedir.original(None, 'win')
+    args.ov1 = args.ov1 or gamedir.derived(None, 'exe', 'NV.OV1')
 
     # ---- collect
     gpcs = collections.OrderedDict()       # name -> {md5: ([disks], data)}
