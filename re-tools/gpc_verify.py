@@ -35,6 +35,7 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(ROOT, 'source', 'tools'))
 sys.path.insert(0, HERE)
 
+import advbuild  # noqa: E402
 import gamedir  # noqa: E402
 import gpc   # noqa: E402
 import pi    # noqa: E402
@@ -127,7 +128,7 @@ class Emu:
         import unicorn
         from unicorn import x86_const as x
         self.uc_mod, self.x = unicorn, x
-        exe = open(ov1_path, 'rb').read()
+        exe = advbuild.check(open(ov1_path, 'rb').read(), advbuild.BIOS, ov1_path)
         if exe[:2] != b'MZ':
             raise ValueError('NV.OV1 is not a plain MZ file')
         hdr_paras = struct.unpack_from('<H', exe, 8)[0]
