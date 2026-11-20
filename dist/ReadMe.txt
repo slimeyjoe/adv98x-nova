@@ -1,10 +1,12 @@
 NOVA for Adv98X @VERSION@
 =========================
 
-Adv98X is a portable engine for games made with Adv98V 1.70.54, the PC-9801 adventure engine of
-Cat's Pro. It plays NOVA (1993): the original scripts unmodified, in Japanese or in Fuzion's
-English translation, reproducing the PC-98 release: text, pictures, palette effects, menus,
-click maps, saves and the FM music.
+Adv98X is a portable engine for PC-9801 games made with Adv98V 1.70.54, the adventure-game
+engine of Tuneup and Ides. It plays Cat's Pro's NOVA (1993): the original scripts unmodified, in
+Japanese or in Fuzion's English translation, reproducing the PC-98 release: text, pictures,
+palette effects, menus, click maps, saves and the FM music.
+
+Adults only: the game contains explicit sexual content.
 
 This archive holds only the engine. It contains none of the game.
 
