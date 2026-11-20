@@ -7,3 +7,4 @@ resources/original/
 resources/derived/
 docs/re/listing/*.asm
 source/compile_flags.txt
+source/tests/rig.conf
