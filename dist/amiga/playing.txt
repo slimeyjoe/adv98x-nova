@@ -1,0 +1,27 @@
+Playing
+-------
+
+From the shell, in this drawer:
+
+    adv98x                        Japanese
+    adv98x LANG=en                English
+    adv98x HELP                   all options
+
+The same options work as tool types of an icon (KEYWORD or KEYWORD=value; "(KEYWORD)" is off),
+should you make one. Without PAK= the program looks for adv98x.pak, else the only .pak
+(nova.pak), next to itself, then in the current directory.
+
+The keyboard is the PC-98's: Return and Space go on, the cursor keys move in menus, Esc
+cancels, Shift held skips text. The mouse works as on the PC-98: click to go on, click menu
+items and places on the maps, the right button cancels.
+
+  Ctrl+Shift+R        reset: the game starts again at its title (saves are kept)
+  Shift+Esc           quit at once (also Ctrl-C in the shell, or the window's close gadget)
+  right Amiga+K       kana input on/off (name entry; the JIS kana layout)
+  F10                 in a window: the next window size
+
+Each ending stays on its last screen for ever, as on the PC-98, where the player switched the
+machine off. Press Ctrl+Shift+R to return to the title; the stories an ending unlocks are then
+on the title menu.
+
+

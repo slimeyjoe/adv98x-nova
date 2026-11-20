@@ -44,7 +44,10 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, '..', 'source', 'tools'))
+# the engine's tools: the submodule engine/ of the game's repository, or this tree's own
+ENGINE = next(d for d in (os.path.join(HERE, '..', 'engine'), os.path.join(HERE, '..'))
+              if os.path.isdir(os.path.join(d, 'source', 'tools')))
+sys.path.insert(0, os.path.join(ENGINE, 'source', 'tools'))
 sys.path.insert(0, HERE)
 import mes      # noqa: E402
 import evedis   # noqa: E402

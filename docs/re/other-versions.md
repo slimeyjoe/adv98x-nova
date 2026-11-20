@@ -177,7 +177,7 @@ for line. What differs:
   exist in no release: dead references in the PC-98 scripts (the Towns `2MAP1B` lacks its one
   too). `END.EVE` adds a jump back to `START`.
 
-### 2.5 Pictures (see graphics-formats.md §5 for the Pi format and the pixel comparison)
+### 2.5 Pictures (see pictures.md §5 for the Pi format and the pixel comparison)
 
 Which pictures the scripts load (`evecmp.py`; counts = scripts):
 

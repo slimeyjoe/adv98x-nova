@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Verify source/tools/gpc.py against two independent witnesses.
+"""Verify the engine's GPC decoder (its source/tools/gpc.py) on NOVA's pictures against two
+independent witnesses.
 
 1. The 1996 Windows release ships the same art as Pi files (decoded by
    re-tools/pi.py).  Every PC-98 GPC is compared with the same-named PI:
@@ -10,7 +11,8 @@
    The "A"/"B" half-screen GPCs (NV12A + NV12B ...) are composed and compared
    with the single full-screen PI (NV12.PI).
 
-2. The original decoder in the game's AdvBIOS (resources/derived/exe/NV.OV1,
+2. The original decoder in the game's AdvBIOS (resources/derived/exe/NV.OV1, the build of
+   the engine's re-tools/advbuild.py,
    routine at image offset 0x29AE = 0290:00AE) is run under the Unicorn CPU
    emulator on every file and its four output bit planes + palette buffer are
    compared with gpc.decode().  This needs the `unicorn` package; without it
@@ -31,8 +33,11 @@ import struct
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(HERE)
-sys.path.insert(0, os.path.join(ROOT, 'source', 'tools'))
+# the engine's tools: the submodule engine/ of the game's repository, or this tree's own
+ENGINE = next(d for d in (os.path.join(HERE, '..', 'engine'), os.path.join(HERE, '..'))
+              if os.path.isdir(os.path.join(d, 'source', 'tools')))
+sys.path.insert(0, os.path.join(ENGINE, 'source', 'tools'))
+sys.path.insert(0, os.path.join(ENGINE, 're-tools'))
 sys.path.insert(0, HERE)
 
 import advbuild  # noqa: E402

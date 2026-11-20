@@ -17,8 +17,8 @@ made by `re-tools/mesgraph.py` (run it without arguments) and land in `resources
 
 Conventions: **verified** = read in the bytecode (offsets are file offsets in the Japanese script);
 **inferred** = a reading of what the code is for, or of the story, not proven. Script format and
-interpreter: [mes-format.md](mes-format.md), [interpreter.md](interpreter.md); AdvBIOS calls:
-[advbios.md](advbios.md). Flags are written R*n*, variables by letter. Menu choices are given in
+interpreter: the engine's `docs/re/mes-format.md`, `docs/re/interpreter.md`; AdvBIOS calls:
+its `docs/re/advbios.md`. Flags are written R*n*, variables by letter. Menu choices are given in
 English paraphrase with a short quotation of the original where that helps to find the place; story
 characterisations are **inferred** (the English translation in `resources/derived/scripts-en/`
 was used to read the story quickly; the Japanese scripts are the reference).

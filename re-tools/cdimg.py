@@ -365,7 +365,11 @@ def cmd_arc(paths, outdir=None):
 
 
 def _gpc():
-    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'source', 'tools'))
+    here = os.path.dirname(os.path.abspath(__file__))
+    # the engine's tools: the submodule engine/ of the game's repository, or this tree's own
+    engine = next(d for d in (os.path.join(here, '..', 'engine'), os.path.join(here, '..'))
+                  if os.path.isdir(os.path.join(d, 'source', 'tools')))
+    sys.path.insert(0, os.path.join(engine, 'source', 'tools'))
     import gpc
     return gpc
 

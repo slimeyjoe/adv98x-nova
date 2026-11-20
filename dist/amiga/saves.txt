@@ -1,0 +1,14 @@
+Saves
+-----
+
+Saves and the player's name are kept as the original's files FLAG0..FLAG9 and NAME.DEF in
+saves/nova/ in this drawer (ENVARC:adv98x/nova/ when the drawer is write-protected), or in the
+directory given with STORAGE=. Files from a PC-98 copy of the game can be put there and are
+used as they are.
+
+
+Licence
+-------
+
+Adv98X is free software under the GNU General Public License, version 3 or later (LICENSE).
+Its source is available where you got this archive.

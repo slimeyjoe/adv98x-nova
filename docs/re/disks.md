@@ -8,7 +8,7 @@ files on one medium should resolve a picture name.
 Sources: `resources/inventory.tsv` (release `pc98`), the parsed scripts, and
 `re-tools/mesgraph.py`, whose `pictures.tsv` and `reach.txt` (in `resources/derived/scripts/`)
 contain every number quoted here. AdvBIOS's side (drive handling, the prompt) is in
-[advbios.md](advbios.md) §8. **verified** = checked on all scripts / files or read in code;
+the engine's `docs/re/advbios.md` §8. **verified** = checked on all scripts / files or read in code;
 **inferred** = not proven.
 
 ## 1. What is on which disk (verified)
