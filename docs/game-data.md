@@ -42,6 +42,10 @@ make pack                      # -> build/nova.pak
   `adv98x.pak`, else the only `.pak` next to it, or the one `--pak` names; the game is named
   inside it. Its contents are described in the engine's `tools/mkpack.py`, the format in
   lrvne's `include/lrvne/pack.h`; lrvne's `tools/lrvne xpak list FILE` lists one.
+* Without a compiler or `make`: the pack-building kit (`make kit` makes
+  `build/adv98x-nova-<version>-kit.zip`) holds `game.py`, the inventory and the engine's and
+  lrvne's Python tools; `python3 makepak.py <your copies...>` in it imports and builds
+  `build/nova.pak`, the same pack as `make pack`.
 * `make data-clean` removes `resources/original/` and `resources/derived/`; `make distclean`
   also `build/`.
 
