@@ -14,7 +14,10 @@ ifeq ($(wildcard $(ENGINE)/source/lrvne/mk/lrvne.mk),)
 $(error lrvne is missing: git submodule update --init --recursive)
 endif
 
-ENGINE_MAKE = $(MAKE) --no-print-directory -C $(ENGINE)/source GAME_DIR=$(CURDIR)
+# the game's release archives are named after it and its version (VERSION)
+GAME_DIST := adv98x-nova-$(strip $(shell cat VERSION))
+
+ENGINE_MAKE = $(MAKE) --no-print-directory -C $(ENGINE)/source GAME_DIR=$(CURDIR) GAME_DIST=$(GAME_DIST)
 
 .DEFAULT_GOAL := all
 .PHONY: all FORCE
